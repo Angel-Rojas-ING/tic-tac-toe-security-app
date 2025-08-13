@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte Final de Análisis de Seguridad - Tic Tac Toe Security App</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .header h2 {
+            color: #7f8c8d;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: normal;
+        }
+        
+        .metadata {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .metadata table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .metadata td {
+            padding: 5px 10px;
+            border-bottom: 1px solid #bdc3c7;
+        }
+        
+        .metadata td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 25px;
+        }
+        
+        h3 {
+            color: #7f8c8d;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .summary-table th,
+        .summary-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .summary-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .summary-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .status-pass {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .status-warning {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        
+        .status-fail {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .risk-item {
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .risk-critical { background-color: #e74c3c; }
+        .risk-high { background-color: #e67e22; }
+        .risk-medium { background-color: #f39c12; }
+        .risk-low { background-color: #27ae60; }
+        
+        .vulnerability-list {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        
+        .vulnerability-item {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            border-left: 3px solid #e74c3c;
+        }
+        
+        .recommendation {
+            background-color: #d5f4e6;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+            margin: 15px 0;
+        }
+        
+        .recommendation h4 {
+            color: #27ae60;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .conclusion {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .conclusion h2 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Reporte Final de Análisis de Seguridad</h1>
+        <h2>Aplicación Web: Tic Tac Toe Security App</h2>
+    </div>
+
+    <div class="metadata">
+        <table>
+            <tr>
+                <td>Desarrollado por:</td>
+                <td>Angel Rojas</td>
+            </tr>
+            <tr>
+                <td>Fecha del Análisis:</td>
+                <td>13 de Agosto, 2025</td>
+            </tr>
+            <tr>
+                <td>Versión del Reporte:</td>
+                <td>1.0</td>
+            </tr>
+            <tr>
+                <td>Duración del Proyecto:</td>
+                <td>1 día</td>
+            </tr>
+        </table>
+    </div>
+
+    <h1>Resumen Ejecutivo</h1>
+    
+    <h2>Objetivo del Proyecto</h2>
+    <p>Desarrollar, analizar y desplegar una aplicación web segura que cumpla con estándares de seguridad modernos, sometida a análisis exhaustivo de vulnerabilidades y buenas prácticas de DevSecOps.</p>
+    
+    <h2>Resultados Principales</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Métrica</th>
+                <th>Resultado</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Funcionalidad</td>
+                <td>100% completada</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Seguridad SAST</td>
+                <td>7.4/10</td>
+                <td class="status-warning">⚠️</td>
+            </tr>
+            <tr>
+                <td>Seguridad DAST</td>
+                <td>6.8/10</td>
+                <td class="status-warning">⚠️</td>
+            </tr>
+            <tr>
+                <td>Seguridad Contenedor</td>
+                <td>9.6/10</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Checklist Seguridad</td>
+                <td>75% cumplido</td>
+                <td class="status-warning">⚠️</td>
+            </tr>
+            <tr>
+                <td>Despliegue</td>
+                <td>100% exitoso</td>
+                <td class="status-pass">✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1>Descripción de la Aplicación</h1>
+    
+    <h2>Características Funcionales</h2>
+    <ul>
+        <li><strong>Juego Tic Tac Toe vs CPU</strong> con 3 niveles de dificultad (Easy, Medium, Hard)</li>
+        <li><strong>Sistema de autenticación seguro</strong> con registro e inicio de sesión</li>
+        <li><strong>Gestión de sesiones</strong> con timeouts y logout seguro</li>
+        <li><strong>Base de datos SQLite</strong> para persistencia de datos</li>
+        <li><strong>Estadísticas de juego</strong> por usuario (victorias, derrotas, empates, win rate)</li>
+        <li><strong>Historial de partidas</strong> completo</li>
+    </ul>
+
+    <h2>Validaciones Específicas Implementadas</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Validación</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Edad</td>
+                <td>Solo usuarios mayores de 18 años</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Contraseña</td>
+                <td>8+ caracteres, mayúsculas, minúsculas, números, caracteres especiales</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Teléfono</td>
+                <td>Formato dominicano (809/829/849 + 7 dígitos)</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>Validación de formato estándar</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Usuario</td>
+                <td>Verificación de unicidad en registro</td>
+                <td class="status-pass">✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1>Análisis de Seguridad - Checklist</h1>
+    
+    <div class="metric-card">
+        <div class="metric-value">75%</div>
+        <div class="metric-label">Cumplimiento General</div>
+    </div>
+
+    <h2>Distribución por Categorías</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Estado</th>
+                <th>Categorías</th>
+                <th>Porcentaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="status-pass">✅ Implementado Correctamente</td>
+                <td>7/10</td>
+                <td>70%</td>
+            </tr>
+            <tr>
+                <td class="status-warning">⚠️ Implementado Parcialmente</td>
+                <td>2/10</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+                <td class="status-fail">❌ No Implementado</td>
+                <td>1/10</td>
+                <td>10%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Cumplimiento OWASP Top 10 2021: 70%</h2>
+    <div class="vulnerability-list">
+        <div class="vulnerability-item">
+            <strong>A01 - Control de Acceso:</strong> <span class="status-pass">✅ Protegido</span>
+        </div>
+        <div class="vulnerability-item">
+            <strong>A02 - Fallas Criptográficas:</strong> <span class="status-warning">⚠️ Parcial (falta HTTPS)</span>
+        </div>
+        <div class="vulnerability-item">
+            <strong>A03 - Inyección:</strong> <span class="status-warning">⚠️ Parcial (SQL protegido, falta CSRF)</span>
+        </div>
+        <div class="vulnerability-item">
+            <strong>A07 - Identificación y Autenticación:</strong> <span class="status-pass">✅ Protegido</span>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>Análisis SAST (Static Application Security Testing)</h1>
+    
+    <div class="metric-card">
+        <div class="metric-value">7.4/10</div>
+        <div class="metric-label">Puntuación SAST</div>
+    </div>
+
+    <h2>Resultados Principales</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Categoría</th>
+                <th>Detecciones</th>
+                <th>Severidad</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Generic Object Injection</td>
+                <td>22</td>
+                <td>Media</td>
+                <td class="status-warning">⚠️</td>
+            </tr>
+            <tr>
+                <td>Vulnerabilidades de Dependencias</td>
+                <td>3</td>
+                <td>Alta</td>
+                <td class="status-fail">❌</td>
+            </tr>
+            <tr>
+                <td>Patrones Peligrosos</td>
+                <td>0</td>
+                <td>-</td>
+                <td class="status-pass">✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="recommendation">
+        <h4>Recomendaciones Críticas SAST</h4>
+        <ol>
+            <li><strong>Crítico:</strong> Actualizar dependencias con <code>npm audit fix --force</code></li>
+            <li><strong>Importante:</strong> Validar índices antes de acceder a arrays</li>
+            <li><strong>Opcional:</strong> Implementar TypeScript para validación de tipos</li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>Análisis DAST (Dynamic Application Security Testing)</h1>
+    
+    <div class="metric-card">
+        <div class="metric-value">6.8/10</div>
+        <div class="metric-label">Puntuación DAST</div>
+    </div>
+
+    <h2>Matriz de Vulnerabilidades</h2>
+    <div class="risk-matrix">
+        <div class="risk-item risk-critical">
+            <div>CRÍTICAS</div>
+            <div style="font-size: 24px;">0</div>
+        </div>
+        <div class="risk-item risk-high">
+            <div>ALTAS</div>
+            <div style="font-size: 24px;">1</div>
+        </div>
+        <div class="risk-item risk-medium">
+            <div>MEDIAS</div>
+            <div style="font-size: 24px;">2</div>
+        </div>
+        <div class="risk-item risk-low">
+            <div>BAJAS</div>
+            <div style="font-size: 24px;">1</div>
+        </div>
+    </div>
+
+    <h2>Vulnerabilidades Identificadas</h2>
+    <div class="vulnerability-list">
+        <div class="vulnerability-item">
+            <strong>ALTA - Falta HTTPS (CVSS: 7.5)</strong><br>
+            Toda comunicación en texto plano, posible session hijacking
+        </div>
+        <div class="vulnerability-item">
+            <strong>MEDIA - JSON Error Information Disclosure (CVSS: 5.3)</strong><br>
+            Stack traces completos expuestos, información del sistema revelada
+        </div>
+        <div class="vulnerability-item">
+            <strong>MEDIA - Verbose Error Messages (CVSS: 4.3)</strong><br>
+            Mensajes específicos que ayudan atacantes
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>Análisis de Seguridad del Contenedor (Trivy)</h1>
+    
+    <div class="metric-card">
+        <div class="metric-value">9.6/10</div>
+        <div class="metric-label">Puntuación Contenedor - EXCELENTE</div>
+    </div>
+
+    <h2>Resultados Trivy</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Componente</th>
+                <th>Vulnerabilidades</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Alpine Linux 3.21.3</td>
+                <td>0</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>208 Paquetes Node.js</td>
+                <td>0</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Dependencias App</td>
+                <td>0</td>
+                <td class="status-pass">✅</td>
+            </tr>
+            <tr>
+                <td>Secretos Detectados</td>
+                <td>0</td>
+                <td class="status-pass">✅</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="recommendation">
+        <h4>Certificación de Seguridad</h4>
+        <p><strong>Estado:</strong> <span class="status-pass">✅ APROBADO PARA PRODUCCIÓN</span></p>
+        <p>El contenedor cumple con todos los estándares de seguridad requeridos para despliegue en producción.</p>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>Implementación y Despliegue</h1>
+    
+    <h2>DockerHub</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Propiedad</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Repositorio</td>
+                <td>angel697/tic-tac-toe-security-app</td>
+            </tr>
+            <tr>
+                <td>Tags</td>
+                <td>latest, v1.0</td>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                <td class="status-pass">✅ Publicado exitosamente</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="code-block">
+docker run -d --name tic-tac-toe-app -p 3000:3000 angel697/tic-tac-toe-security-app:latest
+    </div>
+
+    <h2>GitHub</h2>
+    <ul>
+        <li><strong>Repositorio:</strong> https://github.com/Angel-Rojas-ING/tic-tac-toe-security-app</li>
+        <li><strong>Visibilidad:</strong> Público</li>
+        <li><strong>Contenido:</strong> Código fuente, documentación, reportes de seguridad</li>
+    </ul>
+
+    <h2>Credenciales de Acceso</h2>
+    <ul>
+        <li><strong>Usuario Admin:</strong> admin</li>
+        <li><strong>Password Admin:</strong> admin</li>
+        <li><strong>URL:</strong> http://localhost:3000</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1>Plan de Remediación Priorizado</h1>
+    
+    <h2>Fase 1 - Crítico (1-3 días)</h2>
+    <div class="vulnerability-list">
+        <div class="vulnerability-item">
+            <strong>1. Implementar HTTPS</strong><br>
+            • Obtener certificado SSL/TLS<br>
+            • Configurar redirección HTTP → HTTPS<br>
+            • Actualizar flags de cookies (secure)
+        </div>
+        <div class="vulnerability-item">
+            <strong>2. Actualizar Dependencias</strong><br>
+            • Ejecutar <code>npm audit fix --force</code><br>
+            • Verificar funcionalidad post-actualización
+        </div>
+    </div>
+
+    <h2>Fase 2 - Alto (1 semana)</h2>
+    <div class="vulnerability-list">
+        <div class="vulnerability-item">
+            <strong>3. Mejorar Error Handling</strong><br>
+            • Implementar middleware de error genérico<br>
+            • Remover stack traces en producción<br>
+            • Estandarizar mensajes de error
+        </div>
+    </div>
+
+    <h2>Fase 3 - Medio (2 semanas)</h2>
+    <div class="vulnerability-list">
+        <div class="vulnerability-item">
+            <strong>4. Implementar CSRF Protection</strong><br>
+            • Agregar tokens CSRF a formularios<br>
+            • Validar tokens en servidor
+        </div>
+        <div class="vulnerability-item">
+            <strong>5. Validación de Arrays</strong><br>
+            • Implementar validación de índices en game.js<br>
+            • Sanitización adicional de entrada
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1>Conclusiones y Veredicto Final</h1>
+    
+    <div class="conclusion">
+        <h2>Estado General del Proyecto</h2>
+        <p><strong>EXITOSO</strong> - La aplicación cumple con los objetivos principales y está lista para uso educativo y análisis de seguridad.</p>
+        
+        <h3>Fortalezas Principales</h3>
+        <ul>
+            <li><strong>Funcionalidad Completa</strong> - Todas las características implementadas</li>
+            <li><strong>Seguridad del Contenedor</strong> - Excelente configuración Docker</li>
+            <li><strong>Controles Básicos</strong> - Autenticación, validación, rate limiting</li>
+            <li><strong>Despliegue Automatizado</strong> - DockerHub y GitHub listos</li>
+            <li><strong>Documentación Exhaustiva</strong> - Reportes detallados de todos los análisis</li>
+        </ul>
+    </div>
+
+    <h2>Recomendación Final</h2>
+    
+    <h3>Para Propósitos Educativos: <span class="status-pass">✅ APROBADO</span></h3>
+    <p>La aplicación es excelente para:</p>
+    <ul>
+        <li>Análisis de seguridad académico</li>
+        <li>Demostración de herramientas SAST/DAST</li>
+        <li>Laboratorios de ciberseguridad</li>
+        <li>Testing de vulnerabilidades</li>
+    </ul>
+
+    <h3>Para Producción: <span class="status-warning">⚠️ APROBADO CON CONDICIONES</span></h3>
+    <p>Requiere implementar las mejoras críticas identificadas antes del despliegue en entornos de producción.</p>
+
+    <h2>Valor Agregado del Proyecto</h2>
+    <ul>
+        <li><strong>Aplicación única</strong> entre 30 estudiantes</li>
+        <li><strong>Análisis exhaustivo</strong> con múltiples herramientas</li>
+        <li><strong>Documentación profesional</strong> completa</li>
+        <li><strong>Despliegue automatizado</strong> funcional</li>
+        <li><strong>Código limpio</strong> y bien estructurado</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1>Enlaces y Referencias</h1>
+    
+    <h2>Repositorios y Despliegues</h2>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>Recurso</th>
+                <th>URL/Comando</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GitHub Repository</td>
+                <td>https://github.com/Angel-Rojas-ING/tic-tac-toe-security-app</td>
+            </tr>
+            <tr>
+                <td>DockerHub Image</td>
+                <td>https://hub.docker.com/r/angel697/tic-tac-toe-security-app</td>
+            </tr>
+            <tr>
+                <td>Comando Docker</td>
+                <td><code>docker run -d --name tic-tac-toe-app -p 3000:3000 angel697/tic-tac-toe-security-app:latest</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Archivos de Evidencia</h2>
+    <ol>
+        <li><code>CHECKLIST_SEGURIDAD.md</code> - Evaluación completa de requerimientos</li>
+        <li><code>REPORTE_SAST.md</code> - Análisis estático detallado</li>
+        <li><code>REPORTE_DAST.md</code> - Análisis dinámico completo</li>
+        <li><code>REPORTE_TRIVY.md</code> - Seguridad del contenedor</li>
+        <li><code>DOCKERHUB_INFO.md</code> - Información de despliegue</li>
+        <li><code>DOCKER_DEPLOYMENT.md</code> - Guía de implementación</li>
+    </ol>
+
+    <div style="text-align: center; margin-top: 50px; padding: 20px; border-top: 2px solid #3498db;">
+        <p><strong>Reporte generado el:</strong> 13 de Agosto, 2025</p>
+        <p><strong>Analista de Seguridad:</strong> Angel Rojas</p>
+        <p><strong>Versión:</strong> 1.0</p>
+        <p><strong>Estado:</strong> FINAL</p>
+    </div>
+</body>
+</html>
