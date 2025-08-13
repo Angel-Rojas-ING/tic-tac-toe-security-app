@@ -2,7 +2,45 @@
 
 ## 📸 Capturas Requeridas para Validar el Proyecto
 
-### 1. GitHub Repository
+### 1. ESLint Security (SAST)
+**Ubicación en PDF:** Página 3 - Análisis SAST  
+**Comando:** `npx eslint . --ext .js`  
+**Qué mostrar:**
+- Output completo con 22 detecciones de "Generic Object Injection Sink"
+- Archivos analizados (server.js, public/game.js)
+- Líneas específicas con problemas
+
+### 2. npm audit (SAST)
+**Ubicación en PDF:** Página 3 - Análisis SAST  
+**Comando:** `npm audit`  
+**Qué mostrar:**
+- 3 vulnerabilidades de alta severidad
+- CVE de semver
+- Recomendación "npm audit fix --force"
+
+### 3. Headers Security (DAST)
+**Ubicación en PDF:** Página 4 - Análisis DAST  
+**Comando:** `curl -I http://localhost:3000`  
+**Qué mostrar:**
+- Headers de Helmet.js activos
+- Content-Security-Policy, X-Frame-Options
+- Strict-Transport-Security
+
+### 4. SQL Injection Test (DAST)
+**Ubicación en PDF:** Página 4 - Análisis DAST  
+**Comando:** `curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"username":"admin\"; DROP TABLE users; --","password":"any"}'`  
+**Qué mostrar:**
+- Intento de SQL injection devolviendo "Invalid credentials"
+- Protección efectiva implementada
+
+### 5. Rate Limiting Test (DAST)
+**Ubicación en PDF:** Página 4 - Análisis DAST  
+**Comando:** Múltiples intentos de login fallidos  
+**Qué mostrar:**
+- Rate limiting activándose
+- Mensaje "Too many requests, please try again later"
+
+### 6. GitHub Repository
 **Ubicación en PDF:** Página 4 - Enlaces de GitHub  
 **URL:** https://github.com/Angel-Rojas-ING/tic-tac-toe-security-app  
 **Qué mostrar:**
@@ -56,7 +94,7 @@
 - Status "Up" del contenedor
 - Health check funcionando (si es visible)
 
-### 7. Aplicación Web Funcionando
+### 12. Aplicación Web Funcionando
 **Ubicación en PDF:** Página 8 - Comando Docker  
 **URL:** http://localhost:3000  
 **Qué mostrar:**
@@ -90,9 +128,22 @@ curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json"
 
 Antes de generar el PDF final, verificar que tienes:
 
+### Capturas SAST/DAST (CRÍTICAS):
+- [ ] ✅ Captura ESLint Security (22 detecciones)
+- [ ] ✅ Captura npm audit (3 vulnerabilidades) 
+- [ ] ✅ Captura headers security (curl -I)
+- [ ] ✅ Captura SQL injection test
+- [ ] ✅ Captura rate limiting test
+
+### Capturas Trivy:
+- [ ] ✅ Captura Trivy completo (0 vulnerabilidades)
+- [ ] ✅ Captura Trivy críticas/altas
+
+### Capturas Repositorios:
 - [ ] ✅ Captura GitHub repository
-- [ ] ✅ Captura DockerHub image  
-- [ ] ✅ Captura resultado Trivy (0 vulnerabilidades)
+- [ ] ✅ Captura DockerHub image
+
+### Capturas Funcionamiento:
 - [ ] ✅ Captura pantalla de login
 - [ ] ✅ Captura dashboard del juego
 - [ ] ✅ Captura docker ps
