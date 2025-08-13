@@ -1,0 +1,12 @@
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+database.sqlite
+*.log
+.env
+.DS_Store
+.vscode/
+.idea/
+trivy-report.json
+cookies.txt

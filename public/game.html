@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Tic Tac Toe vs CPU</h1>
+            <div class="user-info">
+                <span>Welcome, <span id="username"></span>!</span>
+                <button id="logoutBtn" class="btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <div class="game-container">
+            <div class="game-controls">
+                <div class="difficulty-selector">
+                    <label for="difficulty">Difficulty:</label>
+                    <select id="difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <button id="newGameBtn" class="btn-primary">New Game</button>
+            </div>
+
+            <div class="game-board" id="gameBoard">
+                <div class="cell" data-cell="0"></div>
+                <div class="cell" data-cell="1"></div>
+                <div class="cell" data-cell="2"></div>
+                <div class="cell" data-cell="3"></div>
+                <div class="cell" data-cell="4"></div>
+                <div class="cell" data-cell="5"></div>
+                <div class="cell" data-cell="6"></div>
+                <div class="cell" data-cell="7"></div>
+                <div class="cell" data-cell="8"></div>
+            </div>
+
+            <div class="game-info">
+                <div id="gameStatus">Choose difficulty and click "New Game" to start!</div>
+                <div id="currentPlayer">You are X, CPU is O</div>
+            </div>
+
+            <div class="stats-container">
+                <h3>Your Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Games Played:</span>
+                        <span id="gamesPlayed">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Wins:</span>
+                        <span id="gamesWon">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Losses:</span>
+                        <span id="gamesLost">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Ties:</span>
+                        <span id="gamesTied">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Win Rate:</span>
+                        <span id="winRate">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gameMessage" class="game-message hidden"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

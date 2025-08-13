@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Security App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Tic Tac Toe vs CPU</h1>
+            <p>Secure Gaming Platform</p>
+        </header>
+
+        <div class="auth-container">
+            <div class="auth-form" id="loginForm">
+                <h2>Login</h2>
+                <form id="login">
+                    <div class="form-group">
+                        <label for="loginUsername">Username:</label>
+                        <input type="text" id="loginUsername" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+            </div>
+
+            <div class="auth-form hidden" id="registerForm">
+                <h2>Register</h2>
+                <form id="register">
+                    <div class="form-group">
+                        <label for="regUsername">Username:</label>
+                        <input type="text" id="regUsername" name="username" required>
+                        <small>3-20 characters, letters, numbers, and underscore only</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regEmail">Email:</label>
+                        <input type="email" id="regEmail" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">Password:</label>
+                        <input type="password" id="regPassword" name="password" required>
+                        <small>8+ chars, uppercase, lowercase, numbers, special characters</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPhone">Phone (Dominican Republic):</label>
+                        <input type="tel" id="regPhone" name="phone" placeholder="8091234567" required>
+                        <small>Format: 809/829/849 + 7 digits</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regBirthDate">Birth Date:</label>
+                        <input type="date" id="regBirthDate" name="birthDate" required>
+                        <small>Must be 18 years or older</small>
+                    </div>
+                    
+                    <button type="submit">Register</button>
+                </form>
+                <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error hidden"></div>
+        <div id="successMessage" class="success hidden"></div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
